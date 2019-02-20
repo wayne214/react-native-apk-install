@@ -30,9 +30,29 @@
 
 ## Usage
 ```javascript
-import RNCardview from 'react-native-cardview';
+import RNFS from 'react-native-fs';
+    import ApkInstaller from 'react-native-apk-installer'
 
-// TODO: What to do with the module?
-RNCardview;
+     try {
+         var filePath = RNFS.CachesDirectoryPath + '/com.example.app.apk';
+         var download = RNFS.downloadFile({
+           fromUrl: 'http://example.com/com.example.app.apk',
+           toFile: filePath,
+           progress: res => {
+               console.log((res.bytesWritten / res.contentLength).toFixed(2));
+           },
+           progressDivider: 1
+         });
+
+         download.promise.then(result => {
+           if(result.statusCode == 200) {
+             console.log(filePath);
+             ApkInstaller.install(filePath);
+           }
+         });
+     }
+     catch(error) {
+         console.warn(error);
+     }
 ```
   
